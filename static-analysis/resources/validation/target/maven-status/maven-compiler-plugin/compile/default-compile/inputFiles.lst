@@ -1,0 +1,14 @@
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/app/LibraryApp.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Book.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Category.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Dvd.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Item.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Loanable.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/model/Member.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/service/Catalog.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/service/ConsoleNotifier.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/service/LoanException.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/service/LoanService.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/service/Notifier.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/util/Statistics.java
+/Users/yagmuraydemir/Desktop/M2/HAI913I/TP1/resources/validation/src/library/util/TextUtils.java
