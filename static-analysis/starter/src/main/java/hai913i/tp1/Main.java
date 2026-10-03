@@ -2,6 +2,7 @@ package hai913i.tp1;
 import java.nio.file.Path;
 import java.util.List;
 
+import hai913i.tp1.callgraph.CallGraph;
 import hai913i.tp1.extraction.FactExtractor;
 import hai913i.tp1.model.*;
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -193,6 +194,41 @@ public final class Main {
         System.out.println("Q13 max parametres         : " + Metrics.maxParameters(facts) + " -> "
                 + Metrics.methodsWithMaxParameters(facts).stream()
                 .map(MethodFact::id).collect(Collectors.joining(", ")));
+
+        // B3: call graph
+        CallGraph graph = CallGraph.build(facts);
+        System.out.println();
+        System.out.println("===== Graphe d'appel (B3) =====");
+        System.out.println("Noeuds             : " + graph.nodes().size());
+        System.out.println("Arcs               : " + graph.edgeCount());
+        System.out.println("Sites internes     : " + graph.internalSites());
+        System.out.println("Appels externes    : " + graph.externalCalls());
+        System.out.println("Appels non resolus : " + graph.unresolvedCalls());
+        System.out.println("Arcs (appelant -> appelee [poids]) :");
+        for (CallGraph.Edge e : graph.edges()) {
+          System.out.println("  " + e.caller() + " -> " + e.callee() + " [" + e.weight() + "]");
+        }
+        // B3: query one method in both directions (3rd argument, optional for now)
+        if (args.length >= 3) {
+          List<String> found = graph.find(args[2]);
+          System.out.println();
+          if (found.size() != 1) {
+            System.out.println("Methode '" + args[2] + "' : "
+                    + (found.isEmpty() ? "introuvable" : "ambigue " + found));
+          } else {
+            String id = found.get(0);
+            System.out.println("Methode    : " + id);
+            System.out.println("appelees   : " + weights(graph.calleesOf(id)));
+            System.out.println("appelantes : " + weights(graph.callersOf(id)));
+          }
+        }
+      }
+      // "a [2], b [1]" or "aucune"
+      private static String weights(Map<String, Integer> methods) {
+        if (methods.isEmpty()) return "aucune";
+        return methods.entrySet().stream()
+                .map(e -> e.getKey() + " [" + e.getValue() + "]")
+                .collect(Collectors.joining(", "));
       }
       // Two decimals, with a dot whatever the machine's locale (same output everywhere)
       private static String fmt(double d) {
