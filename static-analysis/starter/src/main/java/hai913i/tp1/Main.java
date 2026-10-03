@@ -5,15 +5,21 @@ import org.eclipse.jdt.core.compiler.IProblem;
 import hai913i.tp1.parse.JdtParser;
 import hai913i.tp1.parse.JdtParser.ParsedFile;
 import hai913i.tp1.parse.ProjectSources;
-
+//A1
 import hai913i.tp1.extraction.AstPrintVisitor;
-
+//A2
 import java.util.ArrayList;
 import java.util.Comparator;
 import hai913i.tp1.extraction.StructureVisitor;
 import hai913i.tp1.model.FieldFact;
 import hai913i.tp1.model.MethodFact;
 import hai913i.tp1.model.TypeFact;
+//A3
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import hai913i.tp1.extraction.CallVisitor;
+import hai913i.tp1.model.CallFact;
 
 
 
@@ -110,5 +116,37 @@ public final class Main {
                     + m.name() + " : " + m.parameterTypes().size() + " parametre(s)");
           }
         }
+
+      // A3: calls and static receiver types
+
+      List<CallFact> calls = new ArrayList<>();
+      for (ParsedFile file : files) {
+        file.unit().accept(new CallVisitor(file.unit(), calls));
+      }
+
+      long nbInternal = calls.stream().filter(CallFact::internal).count();
+      long nbUnresolved = calls.stream().filter(c -> !c.resolved()).count();
+      long nbExternal = calls.size() - nbInternal - nbUnresolved;
+
+      System.out.println();
+      System.out.println("===== Extraire les appels et le type statique du receveur (A3) =====");
+      System.out.println("Appels      : " + calls.size());
+      System.out.println("Internes    : " + nbInternal);
+      System.out.println("Externes    : " + nbExternal);
+      System.out.println("Non resolus : " + nbUnresolved);
+
+      // Group by caller, sorted by caller id (deterministic output)
+      Map<String, List<CallFact>> byCaller = calls.stream()
+              .collect(Collectors.groupingBy(CallFact::callerId, TreeMap::new, Collectors.toList()));
+      for (Map.Entry<String, List<CallFact>> e : byCaller.entrySet()) {
+        System.out.println();
+        System.out.println(e.getKey());
+        for (CallFact c : e.getValue()) {
+          String target = c.resolved() ? c.targetId() : "NON RESOLU";
+          String scope = !c.resolved() ? "" : (c.internal() ? " [interne]" : " [externe]");
+          System.out.println("  l." + c.line() + "  " + c.name()
+                  + "  receveur " + c.staticReceiverType() + "  -> " + target + scope);
+        }
+      }
     }
 }

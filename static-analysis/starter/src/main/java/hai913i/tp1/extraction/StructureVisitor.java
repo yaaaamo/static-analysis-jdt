@@ -62,7 +62,10 @@ public final class StructureVisitor extends ASTVisitor {
       for (Object p : md.parameters())
         params.add(((SingleVariableDeclaration) p).getType().toString());
     }
-    String id = owner + "#" + name + "(" + String.join(",", params) + ")";
+    //A2
+    //String id = owner + "#" + name + "(" + String.join(",", params) + ")";
+    //A3
+    String id = MethodIds.of(md, owner);
     return new MethodFact(id, name, params, md.isConstructor(), bodyLoc(md));
   }
 
