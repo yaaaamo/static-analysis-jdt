@@ -24,9 +24,7 @@ public final class AstPrintVisitor extends ASTVisitor {
 
   @Override
   public boolean visit(MethodDeclaration node) {
-    System.out.println(">>> méthode : "
-            + node.getName().getIdentifier());
-
+    System.out.println("  ".repeat(depth) + ">>> méthode : " + node.getName().getIdentifier());
     return true;
   }
 }
